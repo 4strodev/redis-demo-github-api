@@ -1,0 +1,5 @@
+{"0":"NestFactory","level":"info","message":"Starting Nest application..."}
+{"0":"InstanceLoader","level":"info","message":"AppModule dependencies initialized"}
+{"0":"RoutesResolver","level":"info","message":"AppController {/}:"}
+{"0":"RouterExplorer","level":"info","message":"Mapped {/, GET} route"}
+{"0":"NestApplication","level":"info","message":"Nest application successfully started"}
