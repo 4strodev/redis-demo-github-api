@@ -1,7 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Logger } from './shared/infrastructure/logging/Logger';
 import { GithubService } from './shared/infrastructure/github/github.service';
+import { Response } from 'express';
 
 @Controller()
 export class AppController {
@@ -12,8 +13,11 @@ export class AppController {
   ) {}
 
   @Get()
-  async getHello() {
+  async getHello(@Res() response: Response) {
+    const tick = performance.now();
     const languages = await this.githubService.getUsedLanguages();
-    return Object.fromEntries(languages.entries());
+    const tock = performance.now();
+    response.setHeader('X-Response-Time', tock - tick);
+    return response.json(Object.fromEntries(languages.entries()));
   }
 }
