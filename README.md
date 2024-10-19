@@ -4,7 +4,7 @@
 
 ## Description
 
-> [!INFO]
+> [!NOTE]
 > NOTE IDK if there are better practices working on redis.
 > this is the first time that I work with cache systems
 > I started this project at 12:00 now is 21:52.
