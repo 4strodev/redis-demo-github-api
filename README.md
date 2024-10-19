@@ -21,6 +21,15 @@
 Initially this was just a playground project to practice logging with winston. But since it was implemented quickly
 I decided to also use this project to practice redis.
 
+## Run the application
+Just modify the docker-compose.yaml and add your github token.
+
+Now start the services with
+
+    docker compose up -d
+
+Now you can use the unique endpoint of the app `/`.
+
 ## Project setup
 
 ```bash
