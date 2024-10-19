@@ -32,13 +32,15 @@ export class GithubCache {
 
   public async setUsedLanguages(usedLanguages: Map<string, number>) {
     this.logger.debug('caching github response');
-    await this.redisClient.HSET(
-      'used_languages',
-      Object.fromEntries(usedLanguages.entries()),
-    );
-    await this.redisClient.EXPIREAT(
-      'used_languages',
-      dayjs().add(30, 'minutes').unix(),
-    );
+    const transactionalClient = this.redisClient.MULTI();
+    try {
+      await transactionalClient
+        .HSET('used_languages', Object.fromEntries(usedLanguages.entries()))
+        .EXPIREAT('used_languages', dayjs().add(30, 'minutes').unix())
+        .EXEC();
+    } catch (e) {
+      transactionalClient.DISCARD();
+      throw e;
+    }
   }
 }

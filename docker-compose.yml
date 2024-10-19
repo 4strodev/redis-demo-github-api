@@ -6,3 +6,12 @@ services:
       - "6379:6379"
     volumes:
       - "./redis/local-data/:/data"
+  api:
+    container_name: github_api
+    build: .
+    restart: on-failure
+    ports:
+      - "3000:3000"
+    environment:
+      GH_TOKEN: your_token
+      REDIS_URL: 'redis://redis:6379'

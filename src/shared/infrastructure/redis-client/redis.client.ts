@@ -4,14 +4,18 @@ import {
   OnApplicationBootstrap,
 } from '@nestjs/common';
 import { createClient, RedisClientType } from 'redis';
+import { ConfigProvider } from '../../config-provider';
 
 @Injectable()
 export class RedisClient
   implements OnApplicationBootstrap, BeforeApplicationShutdown
 {
   private readonly _client: RedisClientType;
-  constructor() {
-    this._client = createClient();
+  constructor(private readonly configProvider: ConfigProvider) {
+    const redisUrl = this.configProvider.config.REDIS_URL;
+    this._client = createClient({
+      url: redisUrl,
+    });
   }
 
   async onApplicationBootstrap(): Promise<any> {

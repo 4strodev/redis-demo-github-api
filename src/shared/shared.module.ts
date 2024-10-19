@@ -5,6 +5,7 @@ import { RedisClient } from './infrastructure/redis-client/redis.client';
 import { GithubService } from './infrastructure/github/github.service';
 import { GithubApi } from './infrastructure/github/github-api';
 import { GithubCache } from './infrastructure/github/github-cache';
+import { ConfigProvider } from './config-provider';
 
 @Global()
 @Module({
@@ -15,6 +16,7 @@ import { GithubCache } from './infrastructure/github/github-cache';
     GithubService,
     GithubApi,
     GithubCache,
+    ConfigProvider,
   ],
   exports: [RedisClient, Logger, GithubService],
 })

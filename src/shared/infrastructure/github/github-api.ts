@@ -1,22 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import * as axios from 'axios';
+import axios from 'axios';
 import { config } from 'dotenv';
+import { ConfigProvider } from '../../config-provider';
+import { Logger } from '../logging/Logger';
 
 @Injectable()
 export class GithubApi {
-  private httpClient: axios.AxiosInstance = axios.create({
+  private httpClient = axios.create({
     baseURL: 'https://api.github.com',
   });
 
-  constructor() {
+  constructor(
+    configProvider: ConfigProvider,
+    private readonly logger: Logger,
+  ) {
     config();
     this.httpClient.interceptors.request.use((config) => {
-      config.headers.set('Authorization', `Bearer ${process.env.GH_TOKEN}`);
+      config.headers.set(
+        'Authorization',
+        `Bearer ${configProvider.config.GH_TOKEN}`,
+      );
       return config;
     });
   }
 
   public async getUsedLanguages(): Promise<Map<string, number>> {
+    this.logger.debug('getting used languages from github');
     const languageUsage: Map<string, number> = new Map<string, number>();
     const repos =
       await this.httpClient.get<{ languages_url: string }[]>(`/user/repos`);
@@ -27,6 +36,8 @@ export class GithubApi {
         languageUsage.set(language, currentUsage + usage);
       }
     }
+
+    this.logger.debug('languages obtained');
 
     return languageUsage;
   }
