@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { Logger } from './shared/services/logging/Logger';
-import { RedisClientService } from './shared/infrastructure/redis-client/redis-client.service';
+import { Logger } from './shared/infrastructure/logging/Logger';
+import { RedisClient } from './shared/infrastructure/redis-client/redis.client';
 
 @Injectable()
 export class AppService {
   constructor(
     private readonly logger: Logger,
-    private readonly client: RedisClientService,
+    private readonly client: RedisClient,
   ) {}
 
   getHello(): string {
